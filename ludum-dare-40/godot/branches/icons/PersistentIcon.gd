@@ -6,7 +6,7 @@ var count = 0
 export(float) var spawn_rate = 0.4
 export(bool) var active
 
-enum STATES { INACTIVE, ACTIVE }
+enum STATES { INACTIVE, ACTIVE, WARNING }
 var state = null
 
 
@@ -29,6 +29,10 @@ func change_state(new_state):
 			add_to_count(0)
 			$Timer.wait_time = spawn_rate
 			$Timer.start()
+			
+			$AnimationPlayer.play('SETUP')
+		WARNING:
+			$AnimationPlayer.play('warning')
 
 
 
@@ -45,3 +49,8 @@ func add_to_count(value):
 	count = clamp(count, 0, 99)
 	$"Notification/Label".text = str(count)
 	emit_signal("notification_count_changed", count, value)
+	
+	if state != WARNING and count > 5:
+		change_state(WARNING)
+	elif state == WARNING and count < 4:
+		change_state(ACTIVE)

@@ -23,16 +23,16 @@ emission_shape = 0
 flag_align_y = false
 flag_rotate_y = false
 flag_disable_z = true
-spread = 50.0
+spread = 35.0
 flatness = 0.0
 gravity = Vector3( 0, 800, 0 )
-initial_velocity = 800.0
-initial_velocity_random = 0.5
+initial_velocity = 1000.0
+initial_velocity_random = 0.4
 angular_velocity = 360.0
 angular_velocity_random = 1.0
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
-linear_accel = 0.0
+linear_accel = 100.0
 linear_accel_random = 0.0
 radial_accel = 0.0
 radial_accel_random = 0.0
@@ -68,12 +68,11 @@ size_flags_vertical = 4
 texture = ExtResource( 1 )
 stretch_mode = 4
 
-[node name="Particles2D2" type="Particles2D" parent="."]
+[node name="CatRainLeft" type="Particles2D" parent="."]
 
-visible = false
 show_behind_parent = true
-position = Vector2( -58.1692, -50.3161 )
-rotation = 0.5485
+position = Vector2( -58.1692, 1924.66 )
+rotation = -1.04535
 emitting = true
 amount = 20
 lifetime = 1.5
@@ -93,12 +92,11 @@ normal_map = null
 h_frames = 1
 v_frames = 1
 
-[node name="Particles2D3" type="Particles2D" parent="."]
+[node name="CatRainRight" type="Particles2D" parent="."]
 
-visible = false
 show_behind_parent = true
-position = Vector2( 1144.38, -67.0179 )
-rotation = 2.34739
+position = Vector2( 1144.38, 1907.96 )
+rotation = 4.1441
 emitting = true
 amount = 20
 lifetime = 2.0

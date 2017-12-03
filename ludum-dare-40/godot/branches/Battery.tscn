@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://branches/Battery.gd" type="Script" id=1]
 [ext_resource path="res://assets/battery.png" type="Texture" id=2]
@@ -7,14 +7,101 @@
 [ext_resource path="res://assets/score-bg.png" type="Texture" id=5]
 [ext_resource path="res://assets/font/ROBOTO-BOLD.TTF" type="DynamicFontData" id=6]
 
-[sub_resource type="DynamicFont" id=1]
+[sub_resource type="Animation" id=1]
+
+resource_name = "SETUP"
+length = 0.01
+loop = false
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("Icon:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Icon:rect_rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+
+[sub_resource type="Animation" id=2]
+
+resource_name = "life_low"
+length = 4.0
+loop = true
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("Icon:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/keys = {
+"times": PoolRealArray( 0, 2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 0.90625, 0.215942, 0.215942, 1 ), Color( 0.90625, 0.0672607, 0.460537, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Icon:rect_rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.65, 0.75, 0.85, 0.95, 1.05, 1.15, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7 ),
+"transitions": PoolRealArray( 1, 1, 0.461392, 0.661618, 0.461392, 0.661618, 1, 1, 0.461392, 0.661618, 0.461392, 0.661618, 1 ),
+"update": 0,
+"values": [ 0.0, 0.0, -5.46879, 9.31711, -5.46879, 9.31711, 0.0, 0.0, -5.46879, 9.31711, -5.46879, 9.31711, 0.0 ]
+}
+
+[sub_resource type="Animation" id=4]
+
+resource_name = "life_medium"
+length = 4.0
+loop = true
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("Icon:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/keys = {
+"times": PoolRealArray( 0, 2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 0.960784, 0.498039, 0.0901961, 1 ), Color( 0.960784, 0.721569, 0.0901961, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Icon:rect_rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1.15, 1.3, 1.45, 1.6, 1.75, 1.9 ),
+"transitions": PoolRealArray( 1, 1, 0.461392, 0.661618, 0.461392, 0.661618, 1 ),
+"update": 0,
+"values": [ 0.0, 0.0, -5.46879, 9.31711, -5.46879, 9.31711, 0.0 ]
+}
+
+[sub_resource type="DynamicFont" id=3]
 
 size = 40
 use_mipmaps = false
 use_filter = true
 font_data = ExtResource( 6 )
 
-[node name="Battery" type="MarginContainer"]
+[node name="Battery" type="Container"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -26,57 +113,35 @@ rect_clip_content = false
 mouse_filter = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-custom_constants/margin_right = 20
-custom_constants/margin_top = 20
-custom_constants/margin_left = 20
-custom_constants/margin_bottom = 20
 script = ExtResource( 1 )
 APP_DRAIN = 2.0
 
-[node name="Battery" type="HBoxContainer" parent="."]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 
+playback_process_mode = 1
+playback_default_blend_time = 0.0
+root_node = NodePath("..")
+anims/SETUP = SubResource( 1 )
+anims/life_low = SubResource( 2 )
+anims/life_medium = SubResource( 4 )
+playback/active = true
+playback/speed = 1.0
+blend_times = [  ]
+autoplay = ""
+
+[node name="Icon" type="TextureRect" parent="."]
+
+modulate = Color( 0.960784, 0.498039, 0.0901961, 1 )
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 20.0
 margin_top = 20.0
-margin_right = 1060.0
+margin_right = 48.0
 margin_bottom = 81.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-custom_constants/separation = 20
-alignment = 1
-
-[node name="HBoxContainer" type="HBoxContainer" parent="Battery"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 909.0
-margin_bottom = 61.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-size_flags_horizontal = 3
-size_flags_vertical = 1
-custom_constants/separation = 20
-alignment = 0
-
-[node name="Icon" type="TextureRect" parent="Battery/HBoxContainer"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 28.0
-margin_bottom = 61.0
 rect_min_size = Vector2( 28, 51 )
-rect_pivot_offset = Vector2( 0, 0 )
+rect_pivot_offset = Vector2( 14, 30 )
 rect_clip_content = false
 mouse_filter = 1
 size_flags_horizontal = 1
@@ -85,15 +150,16 @@ texture = ExtResource( 2 )
 expand = true
 stretch_mode = 0
 
-[node name="ProgressBar" type="TextureProgress" parent="Battery/HBoxContainer"]
+[node name="ProgressBar" type="TextureProgress" parent="."]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 48.0
-margin_right = 648.0
-margin_bottom = 61.0
+margin_left = 68.0
+margin_top = 20.0
+margin_right = 668.0
+margin_bottom = 81.0
 rect_min_size = Vector2( 400, 32 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -114,15 +180,16 @@ radial_fill_degrees = 360.0
 radial_center_offset = Vector2( 0, 0 )
 nine_patch_stretch = false
 
-[node name="Score" type="TextureRect" parent="Battery"]
+[node name="Score" type="TextureRect" parent="."]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 929.0
-margin_right = 1040.0
-margin_bottom = 61.0
+margin_left = 949.0
+margin_top = 20.0
+margin_right = 1060.0
+margin_bottom = 81.0
 rect_pivot_offset = Vector2( 30, 30 )
 rect_clip_content = false
 mouse_filter = 1
@@ -131,7 +198,7 @@ size_flags_vertical = 1
 texture = ExtResource( 5 )
 stretch_mode = 0
 
-[node name="Label" type="Label" parent="Battery/Score"]
+[node name="Label" type="Label" parent="Score"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -144,7 +211,7 @@ rect_clip_content = false
 mouse_filter = 2
 size_flags_horizontal = 1
 size_flags_vertical = 4
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 3 )
 text = "0000"
 align = 1
 valign = 1

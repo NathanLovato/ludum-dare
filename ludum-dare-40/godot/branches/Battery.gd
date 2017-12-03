@@ -18,11 +18,31 @@ const COLOR_LIFE_LOW = Color('#F57F17')
 const COLOR_LIFE_CRITICAL = Color('#F50057')
 
 
+enum STATE { LIFE_HIGH, LIFE_MEDIUM, LIFE_REFILL, LIFE_LOW }
+var state = null
 
 
 func _ready():
 	$"../AppIcons".connect("active_apps_count_changed", self, "_on_icons_count_changed")
 	$"../Dock".connect("lowered_notifications", self, "_on_lowered_notifications")
+	
+	change_state(LIFE_HIGH)
+
+
+func change_state(new_state):
+	match new_state:
+		LIFE_REFILL:
+			$ProgressBar.modulate = COLOR_LIFE_UP
+		LIFE_HIGH:
+			$ProgressBar.modulate = Color(1.0, 1.0, 1.0)
+			$AnimationPlayer.play('SETUP')
+		LIFE_MEDIUM:
+			$ProgressBar.modulate = COLOR_LIFE_LOW
+			$AnimationPlayer.play('life_medium')
+		LIFE_LOW:
+			$ProgressBar.modulate = COLOR_LIFE_CRITICAL
+			$AnimationPlayer.play('life_low')
+	state = new_state
 
 
 func _process(delta):
@@ -30,19 +50,20 @@ func _process(delta):
 	life += fill_rate * delta
 	life = clamp(life, 0, MAX_LIFE)
 
-	if refill_rate - drain_rate > 0:
-		$Battery/HBoxContainer/ProgressBar.modulate = COLOR_LIFE_UP
-	elif life < 50 and life >= 20:
-		$Battery/HBoxContainer/ProgressBar.modulate = COLOR_LIFE_LOW
-	elif life < 20:
-		$Battery/HBoxContainer/ProgressBar.modulate = COLOR_LIFE_CRITICAL
+	if state != LIFE_REFILL and refill_rate - drain_rate > 0:
+		change_state(LIFE_REFILL)
+	elif state != LIFE_MEDIUM:
+		if life < 50 and life >= 20:
+			change_state(LIFE_MEDIUM)
+	elif state != LIFE_LOW and life < 20:
+		change_state(LIFE_LOW)
 
 
 	if life == 0:
 		emit_signal('depleted_battery')
 		set_process(false)
 
-	$Battery/HBoxContainer/ProgressBar.value = life
+	$ProgressBar.value = life
 
 
 func _on_icons_count_changed(apps_count, apps_count_change):
@@ -58,4 +79,4 @@ func _on_lowered_notifications(change):
 
 func set_score(value):
 	score = value
-	$Battery/Score/Label.text = str('%04d' % score)
+	$Score/Label.text = str('%04d' % score)
