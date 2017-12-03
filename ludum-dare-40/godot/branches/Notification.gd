@@ -13,7 +13,7 @@ func _ready():
 	$"..".connect('notification_count_changed', self, "_on_notification_count_changed")
 
 
-func _on_notification_count_changed(new_count):
+func _on_notification_count_changed(new_count, change):
 	if new_count == 0:
 		change_state(INACTIVE)
 	elif state == INACTIVE:

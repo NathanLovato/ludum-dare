@@ -12,28 +12,26 @@ var spawn_node = null
 var spawn_order = []
 var spawn_index = 0
 
-export(float) var timer_duration = 2.0
+export(float) var start_timer_duration = 2.0
+export(float) var min_timer_duration = 0.8
+var timer_duration = start_timer_duration
+
 
 var active_apps_count = 0
 
 
 func _ready():
-	for x in range($Icons.get_child_count()):
-		icons_array.append([])
-		var IconRow = $Icons.get_child(x)
-		for y in range(IconRow.get_child_count()):
-			var ThrowableIcon = IconRow.get_child(y)
-			icons_array[x].append(ThrowableIcon)
+	for child in $Icons.get_children():
+		icons_array.append(child)
 
-			ThrowableIcon.connect("thrown_away", self, 'update_apps_count', [-1])
-			ThrowableIcon.connect("spawned", self, 'update_apps_count', [1])
+		child.connect("thrown_away", self, 'update_apps_count', [-1])
+		child.connect("spawned", self, 'update_apps_count', [1])
 
-	icons_array_size = Vector2(icons_array.size(), icons_array[0].size())
+	icons_array_size = icons_array.size()
 
 	var spawn_indices = []
-	for x in range(icons_array_size.x):
-		for y in range(icons_array_size.y):
-			spawn_indices.append(Vector2(x, y))
+	for x in range(icons_array_size):
+		spawn_indices.append(x)
 
 	spawn_order = shuffle(spawn_indices)
 
@@ -42,14 +40,24 @@ func _ready():
 	$SpawnTimer.connect("timeout", self, "_on_SpawnTimer_timeout")
 
 
+func _process(delta):
+	if timer_duration > min_timer_duration:
+		timer_duration -= delta / 10
+	else:
+		timer_duration = min_timer_duration
+		set_process(false)
+
+
 func update_apps_count(value):
 	active_apps_count += value
-	emit_signal('active_apps_count_changed', active_apps_count)
+	emit_signal('active_apps_count_changed', active_apps_count, value)
 
 
 func _on_SpawnTimer_timeout():
-	var node_indices = spawn_order[spawn_index]
-	spawn_node = icons_array[node_indices.x][node_indices.y]
+	$SpawnTimer.wait_time = timer_duration
+
+	var index = spawn_order[spawn_index]
+	spawn_node = icons_array[index]
 
 	if spawn_node.state == spawn_node.INIT:
 		spawn_node.change_state(spawn_node.SPAWN)

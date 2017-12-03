@@ -3,16 +3,18 @@ extends Control
 
 const NOUN_VERBS = ["rusher", "browser", "doer", "learner", "saver", "grower", "maker"]
 
-var image_files = ['arrow', 'cat', 'learning', 'sun']
+var image_files = ['arrow', 'cat', 'learning', 'sun', 'pan', 'heart']
 var image_resources = []
 
 const IMAGE_PATH = 'res://assets/icon/'
 
 var NOUNS = {
 	'arrow': ['ninja', 'click', 'cursor'],
-	'cat': ['purr', 'meow', 'nyan'],
+	'cat': ['purr', 'meow', 'nyan', 'pet'],
 	'learning': ['book', 'language', 'boring'],
-	'sun': ['weather', 'sun']
+	'sun': ['weather', 'sun', 'cool'],
+	'pan': ['cuisine', 'pan', 'fry'],
+	'heart': ['health', 'love', 'kamikaze']
 }
 
 
@@ -22,7 +24,7 @@ func _ready():
 		image_resources.append(load(path))
 
 	randomize()
-	var image_index = randi() % 4
+	var image_index = randi() % len(image_files)
 	var key = image_files[image_index]
 	$Button.texture_normal = image_resources[image_index]
 

@@ -44,7 +44,7 @@ func _process(delta):
 	match state:
 		MOVE:
 			last_position = rect_position
-			rect_position = get_global_mouse_position() - global_start_position + start_position - rect_pivot_offset
+			rect_position = get_global_mouse_position() - global_start_position + start_position
 			throw_power = last_position.distance_to(rect_position)
 		THROW:
 			velocity += GRAVITY
@@ -75,9 +75,8 @@ func change_state(new_state):
 #		print('Node %s changed to state %s' % [get_path(), new_state])
 	match new_state:
 		SPAWN:
-#			$Randomizer/Button.visible = true
-#			$Randomizer/Label.visible = true
-#			$AnimationPlayer.play('spawn')
+			$Randomizer/Label.visible = true
+			$Tween.interpolate_property($Randomizer/Button, 'visible', false, true, 0.1, Tween.TRANS_LINEAR, Tween.EASE_OUT)
 			$Tween.interpolate_property(self, 'rect_scale', Vector2(), Vector2(1.0, 1.0), TWEEN_DURATION, Tween.TRANS_BACK, Tween.EASE_OUT)
 			$Tween.interpolate_property($Randomizer/Label, 'modulate', COLOR_WHITE_TRANSPARENT, COLOR_WHITE_OPAQUE, TWEEN_DURATION * 2, Tween.TRANS_BACK, Tween.EASE_OUT, TWEEN_DURATION + TWEEN_RETURN_DELAY)
 			$Tween.start()
@@ -99,9 +98,10 @@ func change_state(new_state):
 			velocity = throw_speed * direction
 			emit_signal("thrown_away")
 		INIT:
-#			$Randomizer/Button.visible = false
-#			$Randomizer/Label.visible = false
-			set_scale(Vector2())
+			$Randomizer/Button.visible = false
+			$Randomizer/Label.visible = false
+			rect_scale = Vector2()
+			print(rect_scale)
 			$Randomizer/Label.modulate = COLOR_WHITE_TRANSPARENT
 
 

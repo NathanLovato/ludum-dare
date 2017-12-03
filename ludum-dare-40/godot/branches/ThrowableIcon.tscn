@@ -2,14 +2,14 @@
 
 [ext_resource path="res://branches/ThrowableIcon.gd" type="Script" id=1]
 [ext_resource path="res://branches/IconRandomizer.gd" type="Script" id=2]
-[ext_resource path="res://assets/icon/placeholder/1.png" type="Texture" id=3]
+[ext_resource path="res://assets/icon/cat.png" type="Texture" id=3]
 [ext_resource path="res://assets/font/ROBOTO-MEDIUM.TTF" type="DynamicFontData" id=4]
 
 [sub_resource type="DynamicFont" id=1]
 
 size = 24
 use_mipmaps = false
-use_filter = false
+use_filter = true
 font_data = ExtResource( 4 )
 
 [node name="ThrowableIcon" type="Control"]
@@ -21,7 +21,6 @@ anchor_bottom = 0.0
 margin_right = 128.0
 margin_bottom = 166.0
 rect_min_size = Vector2( 128, 166 )
-rect_scale = Vector2( 0, 0 )
 rect_pivot_offset = Vector2( 64, 64 )
 rect_clip_content = false
 mouse_filter = 0
@@ -55,7 +54,7 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-rect_pivot_offset = Vector2( 0, 0 )
+rect_pivot_offset = Vector2( 64, 64 )
 rect_clip_content = false
 mouse_filter = 1
 size_flags_horizontal = 1
